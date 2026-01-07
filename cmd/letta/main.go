@@ -1,38 +1,48 @@
+// cmd/lettawidget/main.go
 package main
 
 import (
-	"fmt"
+	"letta/pkg/checker"
 	"time"
 
-	"letta/pkg/checker"
+	"github.com/getlantern/systray"
 )
 
 func main() {
-	fmt.Println("🌐 Letta запущен")
+	systray.Run(onReady, onExit)
+}
 
-	checker := checker.New()
-	var prevStatus bool
-	firstCheck := true
+func onReady() {
+	systray.SetTitle("🌐")
+	systray.SetTooltip("Letta - проверка интернета")
 
-	for {
-		status := checker.IsConnected()
+	mStatus := systray.AddMenuItem("Проверяем...", "")
+	mStatus.Disable()
 
-		if status != prevStatus || firstCheck {
-			printStatus(status)
-			prevStatus = false
+	mQuit := systray.AddMenuItem("Выйти", "")
+
+	chk := checker.New()
+
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+
+			if chk.IsConnected() {
+				systray.SetTitle("✅")
+				systray.SetTooltip("Интернет подключен")
+				mStatus.SetTitle("✅ Онлайн")
+			} else {
+				systray.SetTitle("❌")
+				systray.SetTooltip("Нет интернета")
+				mStatus.SetTitle("❌ Оффлайн")
+			}
 		}
+	}()
 
-		time.Sleep(5 * time.Second)
-	}
-
+	go func() {
+		<-mQuit.ClickedCh
+		systray.Quit()
+	}()
 }
 
-func printStatus(connected bool) {
-	timestamp := time.Now().Format("15:04:05")
-
-	if connected {
-		fmt.Printf("[%s] ✅ Интернет подключен\n", timestamp)
-	} else {
-		fmt.Printf("[%s] ❌ Нет подключения\n", timestamp)
-	}
-}
+func onExit() {}

@@ -1,33 +1,42 @@
+// pkg/checker/checker.go
 package checker
 
 import (
-	"net/http"
+	"net"
 	"time"
 )
 
 type Checker struct {
 	timeout time.Duration
-	urls    []string
+	servers []string
+	counter int
 }
 
 func New() *Checker {
 	return &Checker{
-		timeout: 3 * time.Second,
-		urls: []string{
-			"http://clients3.google.com/generate_204",
-			"http://connectivitycheck.gstatic.com/generate_204",
+		timeout: 1 * time.Second,
+		servers: []string{
+			"45.130.214.133:22",
 		},
+		counter: 0,
 	}
 }
 
 func (c *Checker) IsConnected() bool {
-	client := http.Client{Timeout: c.timeout}
+	// Пробуем несколько серверов
+	for attempt := 0; attempt < 3; attempt++ {
+		c.counter = (c.counter + 1) % len(c.servers)
+		server := c.servers[c.counter]
 
-	for _, url := range c.urls {
-		resp, err := client.Head(url)
+		conn, err := net.DialTimeout("tcp", server, c.timeout)
 		if err == nil {
-			resp.Body.Close()
+			conn.Close()
 			return true
+		}
+
+		// Маленькая пауза между попытками
+		if attempt < 2 {
+			time.Sleep(100 * time.Millisecond)
 		}
 	}
 

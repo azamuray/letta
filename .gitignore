@@ -9,17 +9,61 @@
 *.test
 
 # Output of go build
-lettatest  # или другое имя твоего бинарника
+letta        # Твой бинарник
+lettawidget  # Если будешь делать отдельный виджет
+lettacli     # Если будешь делать CLI версию
+
+# Go workspace file
+go.work
+go.work.sum
 
 # Dependency directories
 vendor/
 
-# Go workspace file
-go.work
-
 # IDE files
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Go
+# Автоматически сгенерированные файлы (устаревший формат)
+*.cover
+*.prof
+
+# Бинарники примеров (если будут)
+examples/*.exe
+examples/*.test
+
+# Локальные настройки
+.env
+.env.local
+.env.*.local
+
+# Логи (если программа пишет)
+*.log
+logs/
