@@ -59,13 +59,10 @@ Info.plist:
 $(INSTRUCTIONS_FILE):
 	@echo "📦 Установка $(APP_NAME)" > $@
 	@echo "" >> $@
-	@echo "1. Перетащите $(APP_NAME) в папку 'Программы' (Applications)" >> $@
+	@echo "Инструкция находится по адресу:" >> $@
 	@echo "" >> $@
-	@echo "2. Откройте терминал и выполните следующую команду:" >> $@
+	@echo "    https://github.com/azamuray/letta/wiki/instruction" >> $@
 	@echo "" >> $@
-	@echo "    xattr -d com.apple.quarantine /Applications/Letta.app" >> $@
-	@echo "" >> $@
-	@echo "3. Запустите $(APP_NAME) из папки 'Программы' (Applications)" >> $@
 
 # Create .app bundle (depends on Info.plist)
 app: build Info.plist
