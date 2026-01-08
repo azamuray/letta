@@ -8,11 +8,6 @@
 # Test binary
 *.test
 
-# Output of go build
-letta        # Твой бинарник
-lettawidget  # Если будешь делать отдельный виджет
-lettacli     # Если будешь делать CLI версию
-
 # Go workspace file
 go.work
 go.work.sum
@@ -30,6 +25,13 @@ vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Generated files
+letta
+Letta.app/
+Letta.dmg
+Info.plist
+Инструкция.txt
 
 # Thumbnails
 ._*
